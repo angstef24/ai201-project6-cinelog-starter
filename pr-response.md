@@ -8,8 +8,8 @@
 **How I verified:** I ran grep -rn "save_to_watchlist" --include="*.py" in the terminal to be sure the old name wasn't found in any python files.
 
 ## Comment 2 — Deduplication
-**What I did:**
-**How I verified:**
+**What I did:** I added dedplication code to the add_to_watchlist function.
+**How I verified:** I compared the code to that of the add_to_collection function as well. I needed to add a UniqueConstraint to the models.py file as well to confirm no duplicate will slip.
 
 ## Comment 3 — Missing test
 **What I did:**
