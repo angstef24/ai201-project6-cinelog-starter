@@ -26,9 +26,9 @@
 **Engagement with reviewer's point:** I agree with the point that most users want to see what they have added recently. I would argue even further that users are more likely to be able to remeber a general timeframe when they watched a movie over what the title may have been. I also feel that title introduces another element where we would need to decide if titles with "The" should be with the "T"'s or if we start with the first letter of the second word. Date added is much easier to grasp.
 
 ## Comment 6 — Rebase
-**What conflicted:**
-**How I resolved it:**
-**How I verified no conflict remains:**
+**What conflicted:** Running `git rebase origin/main` conflicted in two files. `.gitignore` had overlapping entries added on both sides. `models.py` conflicted because main had migrated `Film.id` from an integer to a UUID (`db.String(36)`) before my watchlist commits were written, so my code still assumed integer film IDs.
+**How I resolved it:** For `.gitignore`, I kept the union of both sides' entries. For `models.py`, I updated `Film.id`, `CollectionEntry.film_id`, and `WatchlistEntry.film_id` to all use `db.String(36)` so the watchlist code matches main's UUID schema, then continued the rebase commit by commit with `git add` and `git rebase --continue`.
+**How I verified no conflict remains:** I ran the full test suite (`pytest`) to confirm everything still passes with UUID-typed IDs, and ran `git log --oneline --graph` to confirm the branch history is a straight line with no new merge commits.
 
 ## PR Description
 <!-- Written at the end — feature overview, design decisions, manual testing steps -->
