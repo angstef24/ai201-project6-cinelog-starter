@@ -12,8 +12,8 @@
 **How I verified:** I compared the code to that of the add_to_collection function as well. I needed to add a UniqueConstraint to the models.py file as well to confirm no duplicate will slip.
 
 ## Comment 3 — Missing test
-**What I did:**
-**How I verified:**
+**What I did:** I created a new file test_watchlist.py and used the same pattern as test_add_to_collection_nonexistent_film_raises to create test_add_to_watchlist_nonexistent_film_raises.
+**How I verified:** I ran pytest tests/test_watchlist.py -v to make sure that the test case passed. At first, it did not since I needed to add in all of the imports.
 
 ## Comment 4 — Default visibility
 **My position:**
