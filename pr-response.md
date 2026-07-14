@@ -16,14 +16,14 @@
 **How I verified:** I ran pytest tests/test_watchlist.py -v to make sure that the test case passed. At first, it did not since I needed to add in all of the imports.
 
 ## Comment 4 — Default visibility
-**My position:**
-**Reasoning:**
-**Tradeoff acknowledged:**
+**My position:** We should change the default from public=True to public=False on the watch lists.
+**Reasoning:** We need to make the platform safe and enact privacy for those who may not know or don't act fast enough to change their profile to private. Even making it clear to the user that the account starts as public relies on their action to do the work rather.
+**Tradeoff acknowledged:** The goal of our platform is to promote social interactions across people who are avid or casual movie watchers alike. By having your watch list be public, users may able to find others with similar interests outside of their usual circle and thus creating an overall tighter community. A user starting with a private account and not switching to public right away as they want would mean they miss out on certain social feature for a little bit. However, the negative impact of having an account be public without realizing can already provide others with the ability to scrape and see a user's personal watch list data without realizing. I think a further discussio could be had about including a prompt in the beginning of account creation for the user to be able to toggle themselves rather than sticking with a default. Either way, I stand firm in my belief the current code should be public=False.
+
 
 ## Comment 5 — Sort order
-**My position:**
-**Reasoning:**
-**Engagement with reviewer's point:**
+**My position:** I agree that the sort should be on date added.
+**Engagement with reviewer's point:** I agree with the point that most users want to see what they have added recently. I would argue even further that users are more likely to be able to remeber a general timeframe when they watched a movie over what the title may have been. I also feel that title introduces another element where we would need to decide if titles with "The" should be with the "T"'s or if we start with the first letter of the second word. Date added is much easier to grasp.
 
 ## Comment 6 — Rebase
 **What conflicted:**
