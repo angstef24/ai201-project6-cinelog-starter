@@ -31,4 +31,23 @@
 **How I verified no conflict remains:** I ran the full test suite (`pytest`) to confirm everything still passes with UUID-typed IDs, and ran `git log --oneline --graph` to confirm the branch history is a straight line with no new merge commits.
 
 ## PR Description
-<!-- Written at the end — feature overview, design decisions, manual testing steps -->
+### Overview
+Adds a watchlist feature to CineLog, letting users save films they want to watch, separate from their collection of already-watched films (`CollectionEntry`). Introduces a new `WatchlistEntry` model and two endpoints:
+- `GET /watchlist/<user_id>` — list a user's watchlist, sorted by most recently added first.
+- `POST /watchlist/<user_id>/add` — add a film (`{"film_id": <uuid>}`) to a user's watchlist.
+
+### Design decisions
+- `WatchlistEntry` mirrors the shape of `CollectionEntry` (UUID primary key, `user_id`/`film_id` foreign keys, `date_added` timestamp), plus a `public` boolean for social-sharing.
+- Watchlists default to `public=False`. Since most users never change a default, defaulting to public would expose personal watchlist data to scraping/viewing before a user thinks to lock it down — an asymmetric and hard-to-reverse risk compared to a user opting in to sharing later.
+- `get_watchlist` sorts by `date_added` descending (most recent first), matching `get_collection`'s existing convention and prioritizing what users are most likely to want to see first.
+- A `(user_id, film_id)` unique constraint (`unique_user_film_watchlist`) prevents duplicate watchlist entries at the database level, backing up the application-level check in `add_to_watchlist`.
+- `add_to_watchlist` raises `FilmNotFoundError` for a nonexistent film and `AlreadyInWatchlistError` for a duplicate, matching the existing `collection_service` error-handling pattern.
+- Rebased onto `main` to pick up the integer → UUID migration for `Film.id`; all watchlist code and the `WatchlistEntry.film_id` column use `db.String(36)` to match.
+
+### Manual testing steps
+1. Start the app and create a user and a film (or seed data).
+2. `POST /watchlist/<user_id>/add` with a valid `film_id` — confirm a `201` response with the new entry, and that `public` is `false` by default.
+3. Repeat the same request — confirm it's rejected as a duplicate rather than creating a second row.
+4. `POST` with a made-up `film_id` — confirm a not-found error rather than a raw database error.
+5. Add a second film, then `GET /watchlist/<user_id>` — confirm the most recently added film appears first.
+6. Run `pytest` — all tests pass.
