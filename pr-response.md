@@ -51,3 +51,5 @@ Adds a watchlist feature to CineLog, letting users save films they want to watch
 4. `POST` with a made-up `film_id` — confirm a not-found error rather than a raw database error.
 5. Add a second film, then `GET /watchlist/<user_id>` — confirm the most recently added film appears first.
 6. Run `pytest` — all tests pass.
+
+![Git Log screenshot](ai201-project6-cinelog-starter/screenshots/gitlog.png)
